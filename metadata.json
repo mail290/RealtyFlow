@@ -1,6 +1,6 @@
 {
   "name": "RealtyFlow AI",
-  "description": "Intelligent sales assistant for Zen Eco Homes. Built for Freddy Bremseth.",
+  "description": "Professional Real Estate Advisor Suite for Zen Eco Homes",
   "repository": "https://github.com/freddybremseth-coder/RealtyFlowAI",
   "requestFramePermissions": [
     "camera",

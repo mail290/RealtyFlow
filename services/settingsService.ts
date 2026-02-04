@@ -1,5 +1,5 @@
 
-import { Brand, AdvisorProfile, AutomationSettings } from "../types";
+import { Brand, AdvisorProfile, AutomationSettings, AppLanguage } from "../types";
 
 const DEFAULT_BRANDS: Brand[] = [
   { 
@@ -41,37 +41,17 @@ const DEFAULT_BRANDS: Brand[] = [
       pinterestActive: false,
       emailSyncActive: false 
     }
-  },
-  { 
-    id: 'pinoso', 
-    name: 'Pinoso Eco Life', 
-    type: 'Eco-Living', 
-    description: 'Sustainable Inland Living', 
-    tone: 'Warm, Organic, Community-focused',
-    email: 'hello@pinosoecolife.example',
-    phone: '+47 000 00 000',
-    phone2: '+34 900 000 003',
-    website: 'https://pinosoecolife.example',
-    integrations: { 
-      facebookActive: false, 
-      instagramActive: false, 
-      linkedinActive: false, 
-      tiktokActive: false,
-      youtubeActive: false,
-      pinterestActive: false,
-      emailSyncActive: false 
-    }
   }
 ];
 
 const DEFAULT_PROFILE: AdvisorProfile = {
-  name: 'S. Nordmann',
+  name: 'Freddy Bremseth',
   imageUrl: '',
-  phone: '+47 000 00 000',
+  phone: '+47 960099965',
   phone2: '+34 600 000 000',
   location: 'Benidorm, Spain',
   secondaryLocation: 'Biar, Inland',
-  signature: 'Med vennlig hilsen,\nS. Nordmann\nEiendomsrådgiver',
+  signature: 'Med vennlig hilsen,\nFreddy Bremseth\nEiendomsrådgiver',
   expertise: ['Costa Blanca North', 'Inland Properties', 'Sustainable Living', 'Eco-Fincas', 'Benidorm Luxury']
 };
 
@@ -79,7 +59,8 @@ const DEFAULT_AUTOMATION: AutomationSettings = {
   marketPulseEnabled: true,
   brandIdentityGuardEnabled: true,
   socialSyncEnabled: false,
-  leadNurtureEnabled: true
+  leadNurtureEnabled: true,
+  language: AppLanguage.NO
 };
 
 class SettingsService {
@@ -105,6 +86,10 @@ class SettingsService {
   updateAutomation(updated: AutomationSettings) {
     this.automation = updated;
     this.save();
+  }
+
+  getLanguage(): AppLanguage {
+    return this.automation.language || AppLanguage.NO;
   }
 
   private save() {

@@ -1,14 +1,20 @@
 
-// Merk: Du må legge til dine egne Supabase URL og Key i miljøvariabler når du deployer.
-// Siden vi kjører i en demo-kontekst, eksporterer vi en struktur som er klar for integrasjon.
 
-export const SUPABASE_CONFIG = {
-  url: process.env.SUPABASE_URL || 'https://din-prosjekt-id.supabase.co',
-  anonKey: process.env.SUPABASE_ANON_KEY || 'din-anon-key'
-};
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 
-// Dette er en placeholder for @supabase/supabase-js som du installerer via npm/esm
-export const isCloudConnected = !!process.env.SUPABASE_URL;
+// Fix: Use process.env instead of import.meta.env to access environment variables and resolve TypeScript errors
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
 
-// Hjelpefunksjon for å simulere nettverksforsinkelse i demo-modus
-export const networkDelay = () => new Promise(resolve => setTimeout(resolve, 600));
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn("Supabase miljøvariabler mangler. Sjekk VITE_SUPABASE_URL og VITE_SUPABASE_ANON_KEY i Vercel.");
+}
+
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder'
+);
+
+export const isCloudConnected = !!supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co';
+
+export const networkDelay = () => new Promise(resolve => setTimeout(resolve, 300));

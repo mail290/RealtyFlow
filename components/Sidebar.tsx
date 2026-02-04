@@ -1,24 +1,41 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { NAVIGATION_ITEMS } from '../constants';
+import { LayoutDashboard, Users, Map, Image as ImageIcon, FileText, Settings, Mic, Rocket, Home, Zap, MapPin, Database, CloudCheck } from 'lucide-react';
 import { isCloudConnected } from '../services/supabase';
-import { LogOut, Zap, MapPin, Database, CloudCheck, CloudOff } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { settingsStore } from '../services/settingsService';
 import { authStore } from '../services/authService';
 import { AdvisorProfile } from '../types';
+import { useTranslation } from '../services/i18n';
 
 const Sidebar: React.FC = () => {
   const [profile, setProfile] = useState<AdvisorProfile>(settingsStore.getProfile());
+  const [lang, setLang] = useState(settingsStore.getLanguage());
+  const t = useTranslation(lang);
 
   useEffect(() => {
-    return settingsStore.subscribe(() => {
+    const unsub = settingsStore.subscribe(() => {
       setProfile(settingsStore.getProfile());
+      setLang(settingsStore.getLanguage());
     });
+    return unsub;
   }, []);
 
+  const NAVIGATION_ITEMS = [
+    { label: t.nav_dashboard, icon: <LayoutDashboard size={20} />, path: '/' },
+    { label: t.nav_pipeline, icon: <Users size={20} />, path: '/pipeline' },
+    { label: t.nav_inventory, icon: <Home size={20} />, path: '/inventory' },
+    { label: t.nav_market, icon: <Map size={20} />, path: '/market' },
+    { label: t.nav_growth, icon: <Rocket size={20} />, path: '/growth' },
+    { label: t.nav_content, icon: <FileText size={20} />, path: '/content' },
+    { label: t.nav_studio, icon: <ImageIcon size={20} />, path: '/studio' },
+    { label: t.nav_assistant, icon: <Mic size={20} />, path: '/assistant' },
+    { label: t.nav_settings, icon: <Settings size={20} />, path: '/settings' },
+  ];
+
   const handleLogout = () => {
-    if (confirm("Er du sikker på at du vil logge ut?")) {
+    if (confirm("Are you sure?")) {
       authStore.logout();
       window.location.hash = "/login";
     }
@@ -56,7 +73,6 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <div className="p-4 mt-auto space-y-3">
-        {/* Cloud Status Indicator */}
         <div className={`px-4 py-2 rounded-xl border flex items-center justify-between transition-all ${isCloudConnected ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-slate-900 border-slate-800'}`}>
            <div className="flex items-center gap-2">
               {isCloudConnected ? <CloudCheck size={14} className="text-emerald-500" /> : <Database size={14} className="text-slate-600" />}
@@ -64,13 +80,12 @@ const Sidebar: React.FC = () => {
                  {isCloudConnected ? 'Cloud Sync' : 'Local Mode'}
               </span>
            </div>
-           {isCloudConnected && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
         </div>
 
         <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-800">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold overflow-hidden">
-              {profile.imageUrl ? <img src={profile.imageUrl} className="w-full h-full object-cover" /> : <span>{profile.name.split(' ').map(n => n[0]).join('')}</span>}
+              {profile.imageUrl ? <img src={profile.imageUrl} className="w-full h-full object-cover" /> : <span>{profile.name[0]}</span>}
             </div>
             <div className="overflow-hidden">
               <p className="text-sm font-medium text-slate-200 truncate">{profile.name}</p>
@@ -84,7 +99,7 @@ const Sidebar: React.FC = () => {
             className="flex items-center gap-2 text-xs text-slate-500 hover:text-red-400 transition-colors w-full pt-2 border-t border-slate-800/50"
           >
             <LogOut size={12} />
-            Logg ut
+            Logout
           </button>
         </div>
       </div>

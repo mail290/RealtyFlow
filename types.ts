@@ -1,4 +1,13 @@
 
+export enum AppLanguage {
+  NO = 'no',
+  EN = 'en',
+  ES = 'es',
+  DE = 'de',
+  RU = 'ru',
+  FR = 'fr'
+}
+
 export enum LeadStatus {
   NEW = 'NEW',
   QUALIFIED = 'QUALIFIED',
@@ -170,6 +179,7 @@ export interface AutomationSettings {
   brandIdentityGuardEnabled: boolean;
   socialSyncEnabled: boolean;
   leadNurtureEnabled: boolean;
+  language?: AppLanguage;
 }
 
 export interface AdvisorProfile {
