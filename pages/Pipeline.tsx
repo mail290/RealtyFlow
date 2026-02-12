@@ -22,7 +22,7 @@ const COLUMNS = [
 ];
 
 const Pipeline: React.FC = () => {
-  const [leads, setLeads] = useState<Lead[]>(leadStore.getLeads());
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
@@ -40,7 +40,18 @@ const Pipeline: React.FC = () => {
   const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    return leadStore.subscribe(() => setLeads(leadStore.getLeads()));
+    const fetchLeads = async () => {
+      const data = await leadStore.getLeads();
+      setLeads(data);
+    };
+    
+    fetchLeads();
+    
+    // Abonner på endringer og oppdater asynkront
+    return leadStore.subscribe(async () => {
+      const data = await leadStore.getLeads();
+      setLeads(data);
+    });
   }, []);
 
   const filteredLeads = selectedBrand === 'all' ? leads : leads.filter(l => l.brandId === selectedBrand);
@@ -84,10 +95,15 @@ const Pipeline: React.FC = () => {
         lastActivity: 'Nylig opprettet',
         summary: newLead.notes,
         brandId: selectedBrand !== 'all' ? selectedBrand : 'soleada',
-        emails: [], // Tom e-post historie ved start
-        requirements: { budget: parseInt(newLead.value) || 0, location: newLead.location, propertyType: newLead.propertyType, bedrooms: parseInt(newLead.bedrooms) || 0 }
+        emails: [],
+        requirements: { 
+          budget: parseInt(newLead.value) || 0, 
+          location: newLead.location, 
+          propertyType: newLead.propertyType, 
+          bedrooms: parseInt(newLead.bedrooms) || 0 
+        }
       };
-      leadStore.addLead(lead);
+      await leadStore.addLead(lead);
       setIsLeadModalOpen(false);
       setNewLead({ name: '', email: '', value: '', notes: '', bedrooms: '', location: '', propertyType: '' });
     } finally {
@@ -193,7 +209,36 @@ const Pipeline: React.FC = () => {
         </div>
       )}
       
-      {/* Modaler for Import og Ny Lead beholdes som før... */}
+      {isLeadModalOpen && (
+        <div className="fixed inset-0 z-[200] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
+            <header className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Sparkles className="text-cyan-400" size={20} /> Opprett Ny Lead
+              </h3>
+              <button onClick={() => setIsLeadModalOpen(false)} className="text-slate-500 hover:text-white"><X size={20} /></button>
+            </header>
+            
+            <div className="p-8 space-y-6">
+              <form onSubmit={handleManualSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <input required placeholder="Navn" className="bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500" value={newLead.name} onChange={e => setNewLead({...newLead, name: e.target.value})} />
+                  <input placeholder="E-post" type="email" className="bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500" value={newLead.email} onChange={e => setNewLead({...newLead, email: e.target.value})} />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <input placeholder="Budsjett (EUR)" type="number" className="bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500" value={newLead.value} onChange={e => setNewLead({...newLead, value: e.target.value})} />
+                  <input placeholder="Ønsket Sted" className="bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500" value={newLead.location} onChange={e => setNewLead({...newLead, location: e.target.value})} />
+                </div>
+                <textarea placeholder="Notater om kundens behov..." className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 min-h-[100px]" value={newLead.notes} onChange={e => setNewLead({...newLead, notes: e.target.value})} />
+                <button type="submit" disabled={isProcessing} className="w-full py-4 bg-cyan-500 text-slate-950 rounded-2xl font-bold text-sm shadow-xl shadow-cyan-500/20 flex items-center justify-center gap-2 hover:bg-cyan-400 transition-all">
+                  {isProcessing ? <Loader2 className="animate-spin" size={18} /> : <Plus size={18} />}
+                  Lagre Lead
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
