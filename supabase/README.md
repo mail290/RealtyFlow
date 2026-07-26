@@ -99,6 +99,36 @@ test confirmed a user in Org A can read only Org A's rows and that a
 cross-tenant write is rejected by the policy. Seed produced 42 items, 126
 item translations, 10 locales, 15 trades.
 
+## Fase 2 — the offline inspection app
+
+Built on top of this schema (all client code under `lib/care/inspections/`,
+`services/care/`, `pages/InspectionRunner.tsx`):
+
+- **Offline store** — IndexedDB via `idb` (`services/care/inspectionDb.ts`):
+  stores `inspections`, `items`, `photos` (Blob), `meter_readings`, `queue`.
+  All ids are `crypto.randomUUID()`, so sync is idempotent.
+- **Sync engine** (`services/care/syncQueue.ts`) — FIFO queue, exponential
+  backoff 1→2→4→8 s capped at 5 min, order
+  inspection → items → meters → photos → complete, every write an
+  `upsert(onConflict:'id')` into the `care` schema. Runs on `online`, at
+  startup, and every 30 s while the queue is non-empty.
+- **Photos** (`services/care/photo.ts`) — `browser-image-compression`,
+  JPEG, 1600 px, q0.8, EXIF orientation normalised; path
+  `kh/{org}/{property}/{inspection}/{photo}.jpg`; Blob dropped only after
+  the upload is confirmed.
+- **GPS** (`services/care/geo.ts`) — `navigator.geolocation`, never blocks
+  the inspection; records `ok`/`low_accuracy`/`denied`/`unavailable`.
+- **Pure, tested logic** (`lib/care/inspections/`): leak detection
+  (`meterReading.ts`), completion rules (`completion.ts`), deviation→issue
+  suggestions with dedupe (`issues.ts`), template snapshot builder, and the
+  sync backoff. 72 unit tests total across Fase 1 + Fase 2.
+
+**Service worker:** the brief names Serwist (a Next.js/App-Router tool).
+This app is an importmap-based Vite SPA loading modules from esm.sh, so
+`public/sw.js` is a hand-written equivalent: it precaches the app shell and
+runtime-caches the esm.sh module graph (stale-while-revalidate), and never
+caches Supabase REST/storage/auth responses.
+
 ## Known gap (carried into Fase 2)
 
 The RealtyFlow app currently authenticates with a **hardcoded credential

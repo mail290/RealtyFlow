@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   KeyRound, Home, FileSignature, Wrench, ListChecks, ShieldAlert,
-  Plus, Camera, Hash, Droplets, Zap as ZapIcon, MapPin,
+  Plus, Camera, Hash, Droplets, Zap as ZapIcon, MapPin, ClipboardCheck,
 } from 'lucide-react';
 import { careStore, formatCents } from '../services/careService';
+import { startInspection } from '../services/care/inspectionService';
 import type { KhProperty, KhVendor, PropertyType } from '../lib/care/types/careDb';
 
 type Tab = 'overview' | 'properties' | 'contracts' | 'vendors' | 'checklist';
@@ -158,8 +160,20 @@ const Stat: React.FC<{ label: string; value: number; icon: React.ReactNode }> = 
 
 // ---------------- Properties ----------------
 const PropertiesTab: React.FC<{ t: Record<string, string>; properties: KhProperty[] }> = ({ t, properties }) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [starting, setStarting] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<KhProperty>>({ property_type: 'apartment', country: 'ES' });
+
+  const startTilsyn = async (p: KhProperty) => {
+    setStarting(p.id);
+    try {
+      const insp = await startInspection({ property_id: p.id, property_type: p.property_type });
+      navigate(`/care/inspection/${insp.id}`);
+    } finally {
+      setStarting(null);
+    }
+  };
 
   const submit = async () => {
     if (!form.address_line || !form.municipality) return;
@@ -201,7 +215,7 @@ const PropertiesTab: React.FC<{ t: Record<string, string>; properties: KhPropert
       ) : (
         <div className="grid sm:grid-cols-2 gap-3">
           {properties.map((p) => (
-            <Card key={p.id} className="flex items-start justify-between">
+            <Card key={p.id} className="flex flex-col justify-between gap-3">
               <div>
                 <p className="font-bold text-slate-100">{p.reference}</p>
                 <p className="text-sm text-slate-400 flex items-center gap-1"><MapPin size={12} /> {p.address_line}, {p.municipality}</p>
@@ -211,6 +225,9 @@ const PropertiesTab: React.FC<{ t: Record<string, string>; properties: KhPropert
                   {p.has_garden && <span className="tag">{t.garden}</span>}
                 </div>
               </div>
+              <button onClick={() => startTilsyn(p)} disabled={starting === p.id} className="btn-primary justify-center">
+                <ClipboardCheck size={16} /> {starting === p.id ? '…' : 'Start tilsyn'}
+              </button>
             </Card>
           ))}
         </div>
