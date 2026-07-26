@@ -129,6 +129,38 @@ This app is an importmap-based Vite SPA loading modules from esm.sh, so
 runtime-caches the esm.sh module graph (stale-while-revalidate), and never
 caches Supabase REST/storage/auth responses.
 
+## Fase 3 — the report
+
+Turns a finished inspection into an immutable, owner-language PDF.
+
+- **Pure, tested logic** (`lib/care/reports/`): `dataSnapshot.ts` freezes
+  everything the report needs, resolved to the owner's locale;
+  `reference.ts` (KH-R-yy-seq); `contentHash.ts` (sha256, deterministic via
+  key-sorted JSON); `format.ts` (Intl date/number/currency per locale). 17
+  tests, incl. locale formatting and hash stability.
+- **PDF** (`components/care/ReportDocument.tsx`) — `@react-pdf/renderer`,
+  rendered **client-side** (importmap) with header, summary, meter table
+  (anomaly highlighted), two-column checklist, photo gallery (deviation
+  photos first, broken image → placeholder), open issues, manager comment
+  (marked when not in the owner's language), hash footer.
+- **Flow** (`services/care/reportService.ts`) — draft → preview any number
+  of times → **approve & finalise**: freeze snapshot, compute
+  `content_hash` over the frozen snapshot (same snapshot ⇒ same hash),
+  render the final PDF, write an immutable local record + best-effort mirror
+  to `care.kh_reports` and the PDF to storage. UI in the Care **Rapporter**
+  tab.
+
+**content_hash note:** the brief hashes the finished PDF bytes; react-pdf
+embeds timestamps that would make that non-deterministic, so we hash the
+frozen `data_snapshot` (key-sorted) instead — which satisfies "same
+snapshot, same hash" more directly and is printed in the PDF footer.
+
+**Server-side follow-ups (need a backend, like Auth):** Resend email
+delivery, the tokened login-free share page with view tracking
+(`kh_access_tokens` + `first_viewed_at`/`view_count`), and bounce logging in
+`kh_report_deliveries`. The schema for all of this already exists (Fase 1);
+the UI shows a placeholder `share_url` and marks it clearly.
+
 ## Known gap (carried into Fase 2)
 
 The RealtyFlow app currently authenticates with a **hardcoded credential
