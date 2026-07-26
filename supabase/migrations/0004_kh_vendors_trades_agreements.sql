@@ -1,28 +1,22 @@
 -- =====================================================================
 -- 0004: Trade taxonomy, vendor register and vendor agreements
 -- =====================================================================
--- The vendor register is what separates this from a generic management
--- system. Agreements distinguish two legally different money flows:
---   agency_reinvoices     — vendor bills agency, agency bills owner + markup
---   vendor_invoices_owner — vendor bills owner directly, agency takes commission
--- =====================================================================
 
--- Trades are global system content (i18n layer 2), no org_id.
-create table trades (
+create table care.trades (
   code       text primary key,   -- 'plumbing','electrical','pool',...
   sort_order int not null
 );
 
-create table trade_translations (
-  trade_code text not null references trades(code) on delete cascade,
-  locale     text not null references locales(code),
+create table care.trade_translations (
+  trade_code text not null references care.trades(code) on delete cascade,
+  locale     text not null references care.locales(code),
   name       text not null,
   primary key (trade_code, locale)
 );
 
-create table kh_vendors (
+create table care.kh_vendors (
   id               uuid primary key default gen_random_uuid(),
-  org_id           uuid not null references orgs(id) on delete cascade,
+  org_id           uuid not null references care.orgs(id) on delete cascade,
   company_name     text not null,
   contact_name     text,
   email            text,
@@ -40,30 +34,29 @@ create table kh_vendors (
   created_at       timestamptz not null default now()
 );
 
-create index idx_kh_vendors_org on kh_vendors(org_id);
+create index idx_kh_vendors_org on care.kh_vendors(org_id);
 
-create table kh_vendor_trades (
-  org_id     uuid not null references orgs(id) on delete cascade,
-  vendor_id  uuid not null references kh_vendors(id) on delete cascade,
-  trade_code text not null references trades(code),
+create table care.kh_vendor_trades (
+  org_id     uuid not null references care.orgs(id) on delete cascade,
+  vendor_id  uuid not null references care.kh_vendors(id) on delete cascade,
+  trade_code text not null references care.trades(code),
   primary key (vendor_id, trade_code)
 );
 
-create index idx_kh_vendor_trades_org on kh_vendor_trades(org_id);
-create index idx_kh_vendor_trades_trade on kh_vendor_trades(trade_code);
+create index idx_kh_vendor_trades_org on care.kh_vendor_trades(org_id);
+create index idx_kh_vendor_trades_trade on care.kh_vendor_trades(trade_code);
 
--- Fee models & billing routes as explicit enum types.
-create type kh_fee_model as enum
+create type care.kh_fee_model as enum
   ('commission_on_vendor','markup_on_cost','fixed_fee','hourly_coordination','none');
-create type kh_billing_route as enum
+create type care.kh_billing_route as enum
   ('agency_reinvoices','vendor_invoices_owner');
 
-create table kh_vendor_agreements (
+create table care.kh_vendor_agreements (
   id                       uuid primary key default gen_random_uuid(),
-  org_id                   uuid not null references orgs(id) on delete cascade,
-  vendor_id                uuid not null references kh_vendors(id) on delete cascade,
-  fee_model                kh_fee_model not null,
-  billing_route            kh_billing_route not null,
+  org_id                   uuid not null references care.orgs(id) on delete cascade,
+  vendor_id                uuid not null references care.kh_vendors(id) on delete cascade,
+  fee_model                care.kh_fee_model not null,
+  billing_route            care.kh_billing_route not null,
   fee_pct                  numeric(5,2),
   fee_fixed_cents          bigint,
   fee_min_cents            bigint,
@@ -73,12 +66,12 @@ create table kh_vendor_agreements (
   iva_pct                  numeric(5,2) not null default 21.00,
   irpf_pct                 numeric(5,2) not null default 0,   -- Spanish autónomo retención
   payment_terms_days       int not null default 30,
-  auto_approve_under_cents bigint,                            -- small jobs, no owner approval
+  auto_approve_under_cents bigint,
   valid_from               date not null,
   valid_to                 date,
   currency                 char(3) not null default 'EUR',
   created_at               timestamptz not null default now()
 );
 
-create index idx_kh_vendor_agreements_org on kh_vendor_agreements(org_id);
-create index idx_kh_vendor_agreements_vendor on kh_vendor_agreements(org_id, vendor_id);
+create index idx_kh_vendor_agreements_org on care.kh_vendor_agreements(org_id);
+create index idx_kh_vendor_agreements_vendor on care.kh_vendor_agreements(org_id, vendor_id);

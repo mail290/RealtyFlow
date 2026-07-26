@@ -2,7 +2,7 @@
 -- Seed: locales (i18n layer 2) and trade taxonomy with no/en/es names
 -- =====================================================================
 
-insert into locales (code, name_en, rtl) values
+insert into care.locales (code, name_en, rtl) values
   ('no', 'Norwegian', false),
   ('en', 'English',   false),
   ('es', 'Spanish',   false),
@@ -15,7 +15,7 @@ insert into locales (code, name_en, rtl) values
   ('el', 'Greek',     false)
 on conflict (code) do nothing;
 
-insert into trades (code, sort_order) values
+insert into care.trades (code, sort_order) values
   ('plumbing', 1),
   ('electrical', 2),
   ('hvac', 3),
@@ -35,7 +35,7 @@ on conflict (code) do nothing;
 
 -- Spanish names reviewed-pending: trade terminology (vannlås/sluk/rejas)
 -- should be checked by a native speaker before production, per Phase 1 brief.
-insert into trade_translations (trade_code, locale, name) values
+insert into care.trade_translations (trade_code, locale, name) values
   ('plumbing','no','Rørlegger'),          ('plumbing','en','Plumbing'),            ('plumbing','es','Fontanería'),
   ('electrical','no','Elektriker'),        ('electrical','en','Electrical'),        ('electrical','es','Electricidad'),
   ('hvac','no','Klima og ventilasjon'),    ('hvac','en','HVAC'),                    ('hvac','es','Climatización'),

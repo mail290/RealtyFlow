@@ -81,14 +81,14 @@ for (const r of rows) {
   const ten = sqlStr(r[idx.title_en]);
   const tes = sqlStr(r[idx.title_es]);
   body += `
-  insert into kh_checklist_items(
+  insert into care.kh_checklist_items(
       org_id, template_id, code, sort_order, category,
       requires_photo, requires_value, value_unit, applies_to, is_automatic)
     values (
       p_org_id, v_template_id, ${sqlStr(code)}, ${sort}, ${sqlStr(category)},
       ${rp}, ${rv}, ${unit}, ${applies}, ${isAuto})
     returning id into v_item_id;
-  insert into kh_checklist_item_translations(item_id, locale, title) values
+  insert into care.kh_checklist_item_translations(item_id, locale, title) values
     (v_item_id, 'no', ${tno}),
     (v_item_id, 'en', ${ten}),
     (v_item_id, 'es', ${tes});
@@ -106,7 +106,7 @@ const out = `-- ================================================================
 -- this function always creates version 1 of code 'standard'.
 -- =====================================================================
 
-create or replace function kh_seed_default_checklist(p_org_id uuid)
+create or replace function care.seed_default_checklist(p_org_id uuid)
 returns uuid
 language plpgsql
 as $fn$
@@ -114,7 +114,7 @@ declare
   v_template_id uuid;
   v_item_id     uuid;
 begin
-  insert into kh_checklist_templates(
+  insert into care.kh_checklist_templates(
       org_id, code, version, name, property_types, min_photos, is_active)
     values (
       p_org_id, 'standard', 1, 'Standard 42-punkts tilsyn',

@@ -2,14 +2,12 @@
 -- 0002: Checklist templates, items and item translations (i18n layer 2)
 -- =====================================================================
 -- Principle 2: the checklist is versioned. A report always renders with
--- the checklist as it was when the inspection was performed. Editing an
--- item creates a NEW version; old inspections keep pointing at the old
--- template via their frozen template_snapshot.
+-- the checklist as it was when the inspection was performed.
 -- =====================================================================
 
-create table kh_checklist_templates (
+create table care.kh_checklist_templates (
   id             uuid primary key default gen_random_uuid(),
-  org_id         uuid not null references orgs(id) on delete cascade,
+  org_id         uuid not null references care.orgs(id) on delete cascade,
   code           text not null,                 -- e.g. 'standard'
   version        int  not null default 1,
   name           text not null,
@@ -21,16 +19,15 @@ create table kh_checklist_templates (
   unique (org_id, code, version)
 );
 
-create index idx_kh_checklist_templates_org on kh_checklist_templates(org_id);
--- Only one active version of a given template code per org.
+create index idx_kh_checklist_templates_org on care.kh_checklist_templates(org_id);
 create unique index idx_kh_checklist_templates_active
-  on kh_checklist_templates(org_id, code)
+  on care.kh_checklist_templates(org_id, code)
   where is_active;
 
-create table kh_checklist_items (
+create table care.kh_checklist_items (
   id             uuid primary key default gen_random_uuid(),
-  org_id         uuid not null references orgs(id) on delete cascade,
-  template_id    uuid not null references kh_checklist_templates(id) on delete cascade,
+  org_id         uuid not null references care.orgs(id) on delete cascade,
+  template_id    uuid not null references care.kh_checklist_templates(id) on delete cascade,
   code           text not null,                 -- 'water.trap_kitchen' — stable, never edit
   sort_order     int  not null,
   category       text not null,
@@ -43,12 +40,12 @@ create table kh_checklist_items (
   unique (template_id, code)
 );
 
-create index idx_kh_checklist_items_org on kh_checklist_items(org_id);
-create index idx_kh_checklist_items_template on kh_checklist_items(template_id, sort_order);
+create index idx_kh_checklist_items_org on care.kh_checklist_items(org_id);
+create index idx_kh_checklist_items_template on care.kh_checklist_items(template_id, sort_order);
 
-create table kh_checklist_item_translations (
-  item_id   uuid not null references kh_checklist_items(id) on delete cascade,
-  locale    text not null references locales(code),
+create table care.kh_checklist_item_translations (
+  item_id   uuid not null references care.kh_checklist_items(id) on delete cascade,
+  locale    text not null references care.locales(code),
   title     text not null,
   help_text text,
   primary key (item_id, locale)

@@ -6,7 +6,7 @@
 -- Safe to re-run.
 -- =====================================================================
 
-insert into orgs (id, name, slug, default_locale, supported_locales, currency, country)
+insert into care.orgs (id, name, slug, default_locale, supported_locales, currency, country)
 values (
   '11111111-1111-1111-1111-111111111111'::uuid,   -- deterministic demo org id
   'Zen Eco Homes',
@@ -19,7 +19,7 @@ values (
 on conflict (id) do nothing;
 
 -- Standard plans (prices in cents; Principle 4).
-insert into kh_plans (org_id, code, name, visits_per_month, price_cents, currency, included_services)
+insert into care.kh_plans (org_id, code, name, visits_per_month, price_cents, currency, included_services)
 values
   ('11111111-1111-1111-1111-111111111111'::uuid, 'basic',    'Basic — 1 tilsyn/mnd',    1,  9900, 'EUR', '{}'),
   ('11111111-1111-1111-1111-111111111111'::uuid, 'standard', 'Standard — 2 tilsyn/mnd', 2, 17900, 'EUR', '{mail_handling}'),
@@ -31,10 +31,10 @@ on conflict (org_id, code) do nothing;
 do $$
 begin
   if not exists (
-    select 1 from kh_checklist_templates
+    select 1 from care.kh_checklist_templates
     where org_id = '11111111-1111-1111-1111-111111111111'::uuid
       and code = 'standard' and is_active
   ) then
-    perform kh_seed_default_checklist('11111111-1111-1111-1111-111111111111'::uuid);
+    perform care.seed_default_checklist('11111111-1111-1111-1111-111111111111'::uuid);
   end if;
 end $$;

@@ -1,22 +1,18 @@
 -- =====================================================================
 -- 0003: Properties under management, plans and contracts
 -- =====================================================================
--- A kh_property is not a listing. A listing is sold; a kh_property is
--- looked after. They may point at each other (owner may sell later —
--- a valuable pipeline) but they are not the same row.
--- Principle 4: money is stored as integer minor units (bigint cents),
--- every money table carries currency char(3).
+-- Principle 4: money as integer minor units (bigint cents) + currency.
 -- =====================================================================
 
-create table kh_properties (
+create table care.kh_properties (
   id            uuid primary key default gen_random_uuid(),
-  org_id        uuid not null references orgs(id) on delete cascade,
-  brand_id      uuid references brands(id),
-  owner_id      uuid not null references contacts(id),
-  listing_id    uuid references listings(id),  -- if also for sale
-  reference     text not null,                 -- KH-0001, unique per org
+  org_id        uuid not null references care.orgs(id) on delete cascade,
+  brand_id      uuid references public.brands(id),
+  owner_id      uuid not null references public.contacts(id),
+  listing_id    uuid references public.listings(id),  -- if also for sale
+  reference     text not null,                        -- KH-0001, unique per org
   property_type text not null check (property_type in ('apartment','townhouse','villa','finca')),
-  name          text,                          -- friendly name for reports
+  name          text,
   address_line  text not null,
   municipality  text not null,
   postcode      text,
@@ -25,19 +21,19 @@ create table kh_properties (
   lng           numeric(9,6),
   has_pool      boolean not null default false,
   has_garden    boolean not null default false,
-  access_notes  jsonb,                         -- gate code, alarm, parking
+  access_notes  jsonb,                                -- gate code, alarm, parking
   status        text not null default 'active',
   created_at    timestamptz not null default now(),
   unique (org_id, reference)
 );
 
-create index idx_kh_properties_org on kh_properties(org_id);
-create index idx_kh_properties_owner on kh_properties(org_id, owner_id);
+create index idx_kh_properties_org on care.kh_properties(org_id);
+create index idx_kh_properties_owner on care.kh_properties(org_id, owner_id);
 
 -- Plans are per organisation, not global — each SaaS tenant sets its own.
-create table kh_plans (
+create table care.kh_plans (
   id                uuid primary key default gen_random_uuid(),
-  org_id            uuid not null references orgs(id) on delete cascade,
+  org_id            uuid not null references care.orgs(id) on delete cascade,
   code              text not null,
   name              text,
   visits_per_month  int  not null,
@@ -49,14 +45,14 @@ create table kh_plans (
   unique (org_id, code)
 );
 
-create index idx_kh_plans_org on kh_plans(org_id);
+create index idx_kh_plans_org on care.kh_plans(org_id);
 
-create table kh_contracts (
+create table care.kh_contracts (
   id            uuid primary key default gen_random_uuid(),
-  org_id        uuid not null references orgs(id) on delete cascade,
-  property_id   uuid not null references kh_properties(id) on delete cascade,
-  plan_id       uuid not null references kh_plans(id),
-  plan_snapshot jsonb not null,                -- Principle 2 — frozen plan terms
+  org_id        uuid not null references care.orgs(id) on delete cascade,
+  property_id   uuid not null references care.kh_properties(id) on delete cascade,
+  plan_id       uuid not null references care.kh_plans(id),
+  plan_snapshot jsonb not null,                       -- Principle 2 — frozen plan terms
   starts_on     date not null,
   ends_on       date,
   billing_day   int not null default 1,
@@ -64,5 +60,5 @@ create table kh_contracts (
   created_at    timestamptz not null default now()
 );
 
-create index idx_kh_contracts_org on kh_contracts(org_id);
-create index idx_kh_contracts_property on kh_contracts(org_id, property_id);
+create index idx_kh_contracts_org on care.kh_contracts(org_id);
+create index idx_kh_contracts_property on care.kh_contracts(org_id, property_id);

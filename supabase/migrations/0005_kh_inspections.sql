@@ -1,17 +1,16 @@
 -- =====================================================================
 -- 0005: Inspections, inspection items, photos, meter readings
 -- =====================================================================
--- Schema defined now (Phase 1) though first used by the mobile app in
--- Phase 2. All ids are client-generated (crypto.randomUUID) so offline
--- sync is idempotent via upsert on the primary key.
+-- All ids are client-generated (crypto.randomUUID) so offline sync is
+-- idempotent via upsert on the primary key.
 -- =====================================================================
 
-create table kh_inspections (
+create table care.kh_inspections (
   id                  uuid primary key,          -- client-generated
-  org_id              uuid not null references orgs(id) on delete cascade,
-  property_id         uuid not null references kh_properties(id),
-  contract_id         uuid references kh_contracts(id),
-  template_id         uuid not null references kh_checklist_templates(id),
+  org_id              uuid not null references care.orgs(id) on delete cascade,
+  property_id         uuid not null references care.kh_properties(id),
+  contract_id         uuid references care.kh_contracts(id),
+  template_id         uuid not null references care.kh_checklist_templates(id),
   template_snapshot   jsonb not null,            -- Principle 2 — frozen template + translations
   inspector_id        uuid not null references auth.users(id),
   kind                text not null default 'scheduled'
@@ -36,13 +35,13 @@ create table kh_inspections (
   created_at          timestamptz not null default now()
 );
 
-create index idx_kh_inspections_org on kh_inspections(org_id);
-create index idx_kh_inspections_property on kh_inspections(org_id, property_id, started_at desc);
+create index idx_kh_inspections_org on care.kh_inspections(org_id);
+create index idx_kh_inspections_property on care.kh_inspections(org_id, property_id, started_at desc);
 
-create table kh_inspection_items (
+create table care.kh_inspection_items (
   id            uuid primary key,                -- client-generated
-  org_id        uuid not null references orgs(id) on delete cascade,
-  inspection_id uuid not null references kh_inspections(id) on delete cascade,
+  org_id        uuid not null references care.orgs(id) on delete cascade,
+  inspection_id uuid not null references care.kh_inspections(id) on delete cascade,
   item_code     text not null,                   -- against template_snapshot, NOT a FK
   status        text not null
                 check (status in ('ok','deviation','not_applicable','not_checked')),
@@ -53,13 +52,13 @@ create table kh_inspection_items (
   unique (inspection_id, item_code)
 );
 
-create index idx_kh_inspection_items_org on kh_inspection_items(org_id);
-create index idx_kh_inspection_items_inspection on kh_inspection_items(inspection_id);
+create index idx_kh_inspection_items_org on care.kh_inspection_items(org_id);
+create index idx_kh_inspection_items_inspection on care.kh_inspection_items(inspection_id);
 
-create table kh_photos (
+create table care.kh_photos (
   id            uuid primary key,                -- client-generated
-  org_id        uuid not null references orgs(id) on delete cascade,
-  inspection_id uuid not null references kh_inspections(id) on delete cascade,
+  org_id        uuid not null references care.orgs(id) on delete cascade,
+  inspection_id uuid not null references care.kh_inspections(id) on delete cascade,
   item_code     text,
   storage_path  text not null,                   -- kh/{org}/{property}/{inspection}/{photo}.jpg
   width         int,
@@ -70,19 +69,19 @@ create table kh_photos (
   caption       jsonb
 );
 
-create index idx_kh_photos_org on kh_photos(org_id);
-create index idx_kh_photos_inspection on kh_photos(inspection_id);
+create index idx_kh_photos_org on care.kh_photos(org_id);
+create index idx_kh_photos_inspection on care.kh_photos(inspection_id);
 
-create table kh_meter_readings (
+create table care.kh_meter_readings (
   id             uuid primary key,               -- client-generated
-  org_id         uuid not null references orgs(id) on delete cascade,
-  property_id    uuid not null references kh_properties(id) on delete cascade,
-  inspection_id  uuid references kh_inspections(id) on delete set null,
+  org_id         uuid not null references care.orgs(id) on delete cascade,
+  property_id    uuid not null references care.kh_properties(id) on delete cascade,
+  inspection_id  uuid references care.kh_inspections(id) on delete set null,
   meter_type     text not null check (meter_type in ('water','electricity','gas')),
   reading        numeric(12,3) not null,
   unit           text not null,
   read_at        timestamptz not null,
-  previous_id    uuid references kh_meter_readings(id),
+  previous_id    uuid references care.kh_meter_readings(id),
   delta          numeric(12,3),
   days_elapsed   numeric(8,2),
   per_day        numeric(12,4),
@@ -90,7 +89,6 @@ create table kh_meter_readings (
   meter_replaced boolean not null default false
 );
 
-create index idx_kh_meter_readings_org on kh_meter_readings(org_id);
--- Fast lookup of the previous reading for a property + meter type.
+create index idx_kh_meter_readings_org on care.kh_meter_readings(org_id);
 create index idx_kh_meter_readings_lookup
-  on kh_meter_readings(property_id, meter_type, read_at desc);
+  on care.kh_meter_readings(property_id, meter_type, read_at desc);

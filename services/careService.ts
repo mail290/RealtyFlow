@@ -251,14 +251,15 @@ class CareService {
     this.notify();
   }
 
-  /** Best-effort mirror to Supabase; silent no-op in demo mode. */
+  /** Best-effort mirror to Supabase (care schema); silent no-op in demo mode. */
   private async cloudUpsert(table: string, row: Record<string, unknown>) {
     if (!isCloudConnected) return;
     try {
       // Client-generated ids make this idempotent (upsert on primary key).
-      await supabase.from(table).upsert(row, { onConflict: 'id' });
+      // Care lives in its own `care` schema (add it to API → Exposed schemas).
+      await supabase.schema('care').from(table).upsert(row, { onConflict: 'id' });
     } catch (e) {
-      console.warn(`Care: cloud upsert to ${table} failed (staying local)`, e);
+      console.warn(`Care: cloud upsert to care.${table} failed (staying local)`, e);
     }
   }
 

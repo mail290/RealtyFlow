@@ -5,6 +5,17 @@ module described in `keyholding-modul-spec.md`: the full multi-tenant
 schema, RLS, and seed data. It is deliberately framework-agnostic — it
 applies to any Supabase project regardless of the frontend.
 
+## Schema
+
+The Care module lives in its **own `care` schema** (same Supabase project as
+RealtyFlow, isolated like the other brands). Shared CRM objects
+(`public.contacts` / `public.brands` / `public.listings`), `auth`, and
+`storage` stay in their own schemas; Care references them across schemas.
+
+> **Required Supabase setting:** add `care` under
+> **Project Settings → API → Exposed schemas** so PostgREST (supabase-js)
+> can reach it. The client selects it with `supabase.schema('care')`.
+
 ## Layout
 
 ```
@@ -32,7 +43,7 @@ supabase/
 | File | Contents |
 |------|----------|
 | `0001_lookups.sql` | 10 locales, 15-trade taxonomy with no/en/es names |
-| `0002_checklist.sql` | `kh_seed_default_checklist(org_id)` — provisions the standard 42-point template + no/en/es translations (generated from `checklist-seed.csv`) |
+| `0002_checklist.sql` | `care.seed_default_checklist(org_id)` — provisions the standard 42-point template + no/en/es translations (generated from `checklist-seed.csv`) |
 | `0003_demo_org.sql` | Demo org "Zen Eco Homes", three plans, and its checklist |
 
 `supabase/seed/0002_checklist.sql` and `lib/care/data/checklist.json` are
@@ -58,7 +69,7 @@ psql "$DATABASE_URL" -f supabase/seed/0003_demo_org.sql
 After the schema is live, generate typed bindings and commit them:
 
 ```bash
-supabase gen types typescript --linked > lib/care/types/supabase.generated.ts
+supabase gen types typescript --linked --schema care > lib/care/types/supabase.generated.ts
 ```
 
 Until then, `lib/care/types/careDb.ts` is the hand-written source of truth.
