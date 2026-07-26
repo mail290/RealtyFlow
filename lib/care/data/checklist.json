@@ -1,0 +1,838 @@
+[
+  {
+    "code": "arrival.checkin",
+    "sort_order": 1,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": true,
+    "title": {
+      "no": "Ankomst registrert — GPS og klokkeslett",
+      "en": "Arrival registered — GPS and time",
+      "es": "Llegada registrada — GPS y hora"
+    }
+  },
+  {
+    "code": "exterior.facade",
+    "sort_order": 2,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Fasade og yttervegger — sprekker og fuktmerker",
+      "en": "Façade and exterior walls — cracks and damp marks",
+      "es": "Fachada y muros exteriores — grietas y manchas de humedad"
+    }
+  },
+  {
+    "code": "exterior.roof_gutters",
+    "sort_order": 3,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Tak, takrenner og nedløp",
+      "en": "Roof, gutters and downpipes",
+      "es": "Tejado, canalones y bajantes"
+    }
+  },
+  {
+    "code": "exterior.terrace",
+    "sort_order": 4,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Terrasse og utegulv — løse fliser og avrenning",
+      "en": "Terrace and outdoor flooring — loose tiles and drainage",
+      "es": "Terraza y suelos exteriores — baldosas sueltas y desagüe"
+    }
+  },
+  {
+    "code": "exterior.furniture",
+    "sort_order": 5,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Utemøbler, parasoll og puter — sikret",
+      "en": "Outdoor furniture, parasol and cushions — secured",
+      "es": "Mobiliario de exterior, sombrilla y cojines — asegurados"
+    }
+  },
+  {
+    "code": "exterior.awnings",
+    "sort_order": 6,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Markiser og utvendige persienner",
+      "en": "Awnings and external blinds",
+      "es": "Toldos y persianas exteriores"
+    }
+  },
+  {
+    "code": "exterior.garden",
+    "sort_order": 7,
+    "category": "arrival_exterior",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Hage, potteplanter og vanningsanlegg",
+      "en": "Garden, potted plants and irrigation",
+      "es": "Jardín, plantas en maceta y sistema de riego"
+    }
+  },
+  {
+    "code": "security.entrance_door",
+    "sort_order": 8,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Inngangsdør, lås og sylinder",
+      "en": "Entrance door, lock and cylinder",
+      "es": "Puerta de entrada, cerradura y bombín"
+    }
+  },
+  {
+    "code": "security.rejas",
+    "sort_order": 9,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Rejas og sikkerhetsgitter",
+      "en": "Security bars (rejas)",
+      "es": "Rejas de seguridad"
+    }
+  },
+  {
+    "code": "security.windows",
+    "sort_order": 10,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Vinduer og balkongdører — lukket og låst",
+      "en": "Windows and balcony doors — closed and locked",
+      "es": "Ventanas y puertas de balcón — cerradas y con llave"
+    }
+  },
+  {
+    "code": "security.alarm",
+    "sort_order": 11,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Alarm — status, testsignal og batterinivå",
+      "en": "Alarm — status, test signal and battery level",
+      "es": "Alarma — estado, señal de prueba y nivel de batería"
+    }
+  },
+  {
+    "code": "security.sensors",
+    "sort_order": 12,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Bevegelses- og dørsensorer",
+      "en": "Motion and door sensors",
+      "es": "Sensores de movimiento y de puerta"
+    }
+  },
+  {
+    "code": "security.advertising",
+    "sort_order": 13,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Reklame, aviser og pakkelapper fjernet",
+      "en": "Advertising, newspapers and parcel notes removed",
+      "es": "Publicidad, periódicos y avisos de paquetería retirados"
+    }
+  },
+  {
+    "code": "security.intrusion",
+    "sort_order": 14,
+    "category": "security_access",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Spor etter innbruddsforsøk eller uvedkommende",
+      "en": "Signs of attempted intrusion or trespass",
+      "es": "Indicios de intento de robo o intrusión"
+    }
+  },
+  {
+    "code": "mail.collected",
+    "sort_order": 15,
+    "category": "mail_documents",
+    "requires_photo": false,
+    "requires_value": true,
+    "value_unit": "count",
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Postkasse tømt — antall forsendelser",
+      "en": "Mailbox emptied — number of items",
+      "es": "Buzón vaciado — número de envíos"
+    }
+  },
+  {
+    "code": "mail.official",
+    "sort_order": 16,
+    "category": "mail_documents",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Post fra ayuntamiento, Suma, forsikring eller sameie",
+      "en": "Mail from town hall, Suma, insurer or community",
+      "es": "Correo del ayuntamiento, Suma, aseguradora o comunidad"
+    }
+  },
+  {
+    "code": "mail.scanned",
+    "sort_order": 17,
+    "category": "mail_documents",
+    "requires_photo": true,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Fristbelagte brev skannet og lastet opp",
+      "en": "Time-sensitive letters scanned and uploaded",
+      "es": "Cartas con plazo escaneadas y subidas"
+    }
+  },
+  {
+    "code": "water.trap_kitchen",
+    "sort_order": 18,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Vannlås kjøkken — fylt",
+      "en": "Kitchen drain trap — filled",
+      "es": "Sifón de la cocina — lleno"
+    }
+  },
+  {
+    "code": "water.trap_bath1",
+    "sort_order": 19,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Vannlås bad 1 — fylt",
+      "en": "Bathroom 1 drain trap — filled",
+      "es": "Sifón del baño 1 — lleno"
+    }
+  },
+  {
+    "code": "water.trap_bath2",
+    "sort_order": 20,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Vannlås bad 2 eller gjeste-wc — fylt",
+      "en": "Bathroom 2 or guest WC trap — filled",
+      "es": "Sifón del baño 2 o aseo — lleno"
+    }
+  },
+  {
+    "code": "water.floor_drains",
+    "sort_order": 21,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Sluk i dusj og badegulv — spylt og luktfritt",
+      "en": "Shower and floor drains — flushed and odour-free",
+      "es": "Desagües de ducha y suelo — enjuagados y sin olor"
+    }
+  },
+  {
+    "code": "water.toilets",
+    "sort_order": 22,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Toaletter spylt, ingen renning i sisterne",
+      "en": "Toilets flushed, no running cistern",
+      "es": "Inodoros descargados, cisterna sin pérdidas"
+    }
+  },
+  {
+    "code": "water.leaks",
+    "sort_order": 23,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Under vask og bak wc — ingen synlig lekkasje",
+      "en": "Under sinks and behind WC — no visible leaks",
+      "es": "Bajo fregaderos y tras el inodoro — sin fugas visibles"
+    }
+  },
+  {
+    "code": "water.boiler",
+    "sort_order": 24,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Varmtvannsbereder — trykk, temperatur, ingen drypp",
+      "en": "Water heater — pressure, temperature, no dripping",
+      "es": "Termo o caldera — presión, temperatura, sin goteo"
+    }
+  },
+  {
+    "code": "water.stopcock",
+    "sort_order": 25,
+    "category": "water_drainage",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Stoppekran og vanntrykk i anlegget",
+      "en": "Stopcock and system water pressure",
+      "es": "Llave de paso y presión de la instalación"
+    }
+  },
+  {
+    "code": "climate.ventilation",
+    "sort_order": 26,
+    "category": "climate_indoor",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Krysslufting gjennomført, 30–45 minutter",
+      "en": "Cross-ventilation completed, 30–45 minutes",
+      "es": "Ventilación cruzada realizada, 30–45 minutos"
+    }
+  },
+  {
+    "code": "climate.temperature",
+    "sort_order": 27,
+    "category": "climate_indoor",
+    "requires_photo": false,
+    "requires_value": true,
+    "value_unit": "C",
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Innetemperatur",
+      "en": "Indoor temperature",
+      "es": "Temperatura interior"
+    }
+  },
+  {
+    "code": "climate.humidity",
+    "sort_order": 28,
+    "category": "climate_indoor",
+    "requires_photo": false,
+    "requires_value": true,
+    "value_unit": "pct",
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Relativ luftfuktighet",
+      "en": "Relative humidity",
+      "es": "Humedad relativa"
+    }
+  },
+  {
+    "code": "climate.mould",
+    "sort_order": 29,
+    "category": "climate_indoor",
+    "requires_photo": true,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Mugg- og fuktkontroll — skap, hjørner, bak møbler",
+      "en": "Mould and damp check — cupboards, corners, behind furniture",
+      "es": "Control de moho y humedad — armarios, esquinas, tras los muebles"
+    }
+  },
+  {
+    "code": "climate.ac_cooling",
+    "sort_order": 30,
+    "category": "climate_indoor",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Klimaanlegg testet — kjøling",
+      "en": "Air conditioning tested — cooling",
+      "es": "Aire acondicionado probado — frío"
+    }
+  },
+  {
+    "code": "climate.ac_heating",
+    "sort_order": 31,
+    "category": "climate_indoor",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Klimaanlegg testet — varme",
+      "en": "Air conditioning tested — heating",
+      "es": "Aire acondicionado probado — calor"
+    }
+  },
+  {
+    "code": "climate.ac_filter",
+    "sort_order": 32,
+    "category": "climate_indoor",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "AC-filter og kondensavløp",
+      "en": "AC filter and condensate drain",
+      "es": "Filtro del aire y desagüe de condensados"
+    }
+  },
+  {
+    "code": "power.breakers",
+    "sort_order": 33,
+    "category": "power_meters",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Sikringsskap — ingen utløste kurser",
+      "en": "Consumer unit — no tripped breakers",
+      "es": "Cuadro eléctrico — sin diferenciales saltados"
+    }
+  },
+  {
+    "code": "power.electricity_meter",
+    "sort_order": 34,
+    "category": "power_meters",
+    "requires_photo": true,
+    "requires_value": true,
+    "value_unit": "kWh",
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Strømmåler avlest",
+      "en": "Electricity meter reading",
+      "es": "Lectura del contador de luz"
+    }
+  },
+  {
+    "code": "power.water_meter",
+    "sort_order": 35,
+    "category": "power_meters",
+    "requires_photo": true,
+    "requires_value": true,
+    "value_unit": "m3",
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Vannmåler avlest",
+      "en": "Water meter reading",
+      "es": "Lectura del contador de agua"
+    }
+  },
+  {
+    "code": "power.fridge",
+    "sort_order": 36,
+    "category": "power_meters",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Kjøleskap og fryser i drift — temperatur",
+      "en": "Fridge and freezer running — temperature",
+      "es": "Frigorífico y congelador en marcha — temperatura"
+    }
+  },
+  {
+    "code": "power.timers",
+    "sort_order": 37,
+    "category": "power_meters",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Belysning og tidsur for tilstedeværelsessimulering",
+      "en": "Lighting and timers for occupancy simulation",
+      "es": "Iluminación y temporizadores de simulación de presencia"
+    }
+  },
+  {
+    "code": "rooms.walkthrough",
+    "sort_order": 38,
+    "category": "rooms_checkout",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Samtlige rom visuelt gjennomgått",
+      "en": "All rooms visually inspected",
+      "es": "Todas las estancias inspeccionadas visualmente"
+    }
+  },
+  {
+    "code": "rooms.pests",
+    "sort_order": 39,
+    "category": "rooms_checkout",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Skadedyr og insekter — spor og feller",
+      "en": "Pests and insects — traces and traps",
+      "es": "Plagas e insectos — rastros y trampas"
+    }
+  },
+  {
+    "code": "rooms.appliances",
+    "sort_order": 40,
+    "category": "rooms_checkout",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Hvitevarer og elektronikk — ingen feilkoder",
+      "en": "Appliances and electronics — no fault codes",
+      "es": "Electrodomésticos y electrónica — sin códigos de error"
+    }
+  },
+  {
+    "code": "pool.technical",
+    "sort_order": 41,
+    "category": "rooms_checkout",
+    "requires_photo": true,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "villa",
+      "finca"
+    ],
+    "is_automatic": false,
+    "title": {
+      "no": "Basseng og teknisk rom — vannivå, pumpe, klarhet",
+      "en": "Pool and plant room — water level, pump, clarity",
+      "es": "Piscina y cuarto técnico — nivel de agua, bomba, claridad"
+    }
+  },
+  {
+    "code": "checkout.secure",
+    "sort_order": 42,
+    "category": "rooms_checkout",
+    "requires_photo": false,
+    "requires_value": false,
+    "value_unit": null,
+    "applies_to": [
+      "apartment",
+      "townhouse",
+      "villa",
+      "finca"
+    ],
+    "is_automatic": true,
+    "title": {
+      "no": "Utsjekk — alt låst, alarm aktivert, GPS og klokkeslett",
+      "en": "Check-out — all locked, alarm armed, GPS and time",
+      "es": "Salida — todo cerrado, alarma activada, GPS y hora"
+    }
+  }
+]

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Map, Image as ImageIcon, FileText, Settings, Mic, Rocket, Home, Zap, MapPin, Database, CloudCheck } from 'lucide-react';
+import { LayoutDashboard, Users, Map, Image as ImageIcon, FileText, Settings, Mic, Rocket, Home, Zap, MapPin, Database, CloudCheck, KeyRound } from 'lucide-react';
 import { isCloudConnected } from '../services/supabase';
 import { LogOut } from 'lucide-react';
 import { settingsStore } from '../services/settingsService';
@@ -26,6 +26,7 @@ const Sidebar: React.FC = () => {
     { label: t.nav_dashboard, icon: <LayoutDashboard size={20} />, path: '/' },
     { label: t.nav_pipeline, icon: <Users size={20} />, path: '/pipeline' },
     { label: t.nav_inventory, icon: <Home size={20} />, path: '/inventory' },
+    { label: t.nav_care ?? 'Care', icon: <KeyRound size={20} />, path: '/care' },
     { label: t.nav_market, icon: <Map size={20} />, path: '/market' },
     { label: t.nav_growth, icon: <Rocket size={20} />, path: '/growth' },
     { label: t.nav_content, icon: <FileText size={20} />, path: '/content' },
