@@ -11,6 +11,7 @@ import {
   Plus, X, Camera, UserPlus, Loader2, Sparkles, Euro, MessageSquare, Brain, CloudCheck, CloudOff
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import CareEconomyStrip from '../components/care/CareEconomyStrip';
 
 const DASHBOARD_STATS = [
   { label: 'Global Leads', value: '452', change: '+8%', icon: <Users className="text-cyan-400" /> },
@@ -184,6 +185,10 @@ const Dashboard: React.FC = () => {
                 <h3 className="text-lg lg:text-2xl font-bold text-slate-100 font-mono">{stat.value}</h3>
               </div>
             ))}
+          </section>
+
+          <section className="mb-6 lg:mb-8">
+            <CareEconomyStrip />
           </section>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
