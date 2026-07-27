@@ -37,6 +37,9 @@ supabase/
 | `0007_kh_reports.sql` | `kh_reports`, `kh_report_deliveries`, per-org report counter (Fase 3) |
 | `0008_rls_policies.sql` | `tenant_isolation` on every `kh_` table + global lookup read policies |
 | `0009_storage_kh_photos.sql` | Private `kh-photos` bucket + per-org storage RLS |
+| `0010_kh_calendar_keys.sql` | Calendar events (Fase 4) + key log `kh_keys`/`kh_key_events` |
+| `0011_kh_documents.sql` | Property documents (Fase 5 owner portal) |
+| `0012_kh_invoicing.sql` | Charges, invoices, invoice lines, per-org counter (Fase 6) |
 
 ### Seed (apply after migrations)
 
@@ -73,6 +76,24 @@ supabase gen types typescript --linked --schema care > lib/care/types/supabase.g
 ```
 
 Until then, `lib/care/types/careDb.ts` is the hand-written source of truth.
+
+## Deployment status
+
+Applied to the shared RealtyFlow Supabase project
+`uzecdowdxigwpjbmiqrm` (freddy@extrade.es's Project):
+
+- 32 tables live in the `care` schema; seed loaded (1 org, 3 plans, 42
+  checklist items, 126 translations, 10 locales, 15 trades).
+- `public.contacts` / `brands` / `listings` already existed in that project
+  (it hosts several apps). The migrations reused them via FK and added only
+  a nullable `contacts.locale` column — no existing table was recreated.
+- The pre-existing `rls_disabled_in_public` advisor errors belong to that
+  project's other apps and were deliberately left untouched. Every `care.*`
+  table has RLS enabled with `tenant_isolation`.
+
+**Still required in the dashboard (no API/CLI for it):** add `care` under
+**Settings → API → Exposed schemas** so `supabase.schema('care')` works from
+the browser client.
 
 ## Design principles honoured (Fase 1 brief)
 
