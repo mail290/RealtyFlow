@@ -77,10 +77,31 @@ supabase gen types typescript --linked --schema care > lib/care/types/supabase.g
 
 Until then, `lib/care/types/careDb.ts` is the hand-written source of truth.
 
-## Deployment status
+## Deploying to RealtyFlow Pro (`ereapsfcsqtdmzosgnnn`)
 
-Applied to the shared RealtyFlow Supabase project
-`uzecdowdxigwpjbmiqrm` (freddy@extrade.es's Project):
+The intended target is the RealtyFlow Pro project `ereapsfcsqtdmzosgnnn`.
+That project sits outside the Supabase org this session's tooling can reach
+(`Whitelabel`), so it can't be applied from here directly. Instead:
+
+1. Open the project's **SQL editor**.
+2. Paste and run **`supabase/deploy_care_all.sql`** (one self-contained file:
+   all 12 migrations + storage bucket + the 42-point checklist function +
+   locales/trades seed + the Zen Eco Homes demo org + hardening). It has been
+   verified to run in a single pass on a fresh Postgres 17.
+3. Add **`care`** under **Settings → API → Exposed schemas**.
+
+The script is safe against the existing CRM: `public.contacts/brands/listings`
+are created only `if not exists`, and only a nullable `contacts.locale`
+column is added.
+
+## Earlier deployment (to be cleaned up)
+
+An initial deploy went to `uzecdowdxigwpjbmiqrm` (freddy@extrade.es's
+Project) before the correct project was identified. It holds only demo seed
+data. To remove it: `drop schema care cascade;` and
+`alter table public.contacts drop column if exists locale;`.
+
+## Verified on that earlier project:
 
 - 32 tables live in the `care` schema; seed loaded (1 org, 3 plans, 42
   checklist items, 126 translations, 10 locales, 15 trades).
