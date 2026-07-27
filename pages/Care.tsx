@@ -64,7 +64,12 @@ const Care: React.FC = () => {
   const [tab, setTab] = useState<Tab>('overview');
   const [locale, setLocale] = useState<Locale>('no');
 
-  useEffect(() => careStore.subscribe(() => forceRender((n) => n + 1)), []);
+  useEffect(() => {
+    const unsub = careStore.subscribe(() => forceRender((n) => n + 1));
+    // Pull live records from the care schema when a real session exists.
+    careStore.syncFromCloud().catch(() => { /* stay on local demo data */ });
+    return unsub;
+  }, []);
   const t = TXT[locale];
 
   const properties = careStore.getProperties();

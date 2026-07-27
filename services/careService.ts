@@ -14,6 +14,7 @@
 // =====================================================================
 
 import { supabase, isCloudConnected } from './supabase';
+import { fetchCareData } from './care/careLive';
 import checklistItems from '../lib/care/data/checklist.json';
 import { resolveTranslation } from '../lib/care/i18n/resolveTranslation';
 import type {
@@ -236,6 +237,24 @@ class CareService {
     return this.state.vendors.filter(
       (v) => v.insurance_expires_on && new Date(v.insurance_expires_on).getTime() <= cutoff,
     );
+  }
+
+  // ---- live read from the care schema ----
+
+  /**
+   * Replace local state with live data from the `care` schema when a real
+   * Supabase session is present. Returns true if live data was loaded.
+   * Non-destructive: does nothing (keeps demo data) when not authenticated.
+   */
+  async syncFromCloud(): Promise<boolean> {
+    const data = await fetchCareData();
+    if (!data) return false;
+    this.state.properties = data.properties;
+    if (data.plans.length) this.state.plans = data.plans;
+    this.state.contracts = data.contracts;
+    this.state.vendors = data.vendors;
+    this.save();
+    return true;
   }
 
   // ---- persistence ----

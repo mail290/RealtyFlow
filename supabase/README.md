@@ -116,6 +116,45 @@ data. To remove it: `drop schema care cascade;` and
 **Settings → API → Exposed schemas** so `supabase.schema('care')` works from
 the browser client.
 
+## Connecting the app to live Care data
+
+The app reads live from the `care` schema when three things are true.
+Because `care` tables enforce RLS (`tenant_isolation`), a real Supabase
+session whose user is in `care.org_members` is required — the anon key
+alone sees nothing.
+
+1. **Env vars** (deployment / `.env`), pointing at RealtyFlow Pro
+   (`ereapsfcsqtdmzosgnnn`):
+   ```
+   VITE_SUPABASE_URL=https://ereapsfcsqtdmzosgnnn.supabase.co
+   VITE_SUPABASE_ANON_KEY=<anon public key>
+   ```
+2. **Expose the schema:** Settings → API → Exposed schemas → add `care`.
+3. **A login that is a Supabase Auth user in the org.** Create the manager
+   as an Auth user (Dashboard → Authentication → Users, or first login now
+   goes through `supabase.auth.signInWithPassword`), then link them to the
+   Zen Eco Homes org:
+   ```sql
+   insert into care.org_members (org_id, user_id, role, locale)
+   select '11111111-1111-1111-1111-111111111111', id, 'owner', 'no'
+   from auth.users where email = 'YOUR_LOGIN_EMAIL'
+   on conflict do nothing;
+   ```
+
+Then log in with that user. The dashboard's Care card shows a **Live** badge
+(vs **Lokal**) and the Care module hydrates from the schema. Numbers reflect
+whatever real records exist in `care` — until properties/contracts are
+added there, MRR and counts read near zero.
+
+Client wiring (already in the repo):
+- `services/authService.ts` — signs in via Supabase when configured (demo
+  credentials remain a fallback with no live access); restores the session
+  on load.
+- `services/care/careLive.ts` — live reads of `care` for the module and the
+  economy summary, gated on an authenticated session.
+- `services/careService.ts#syncFromCloud` + `components/care/CareEconomyStrip`
+  — prefer live data, fall back to local demo.
+
 ## Design principles honoured (Fase 1 brief)
 
 1. **Multi-tenant from migration one.** Every `kh_` table has `org_id`,

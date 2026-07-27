@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { KeyRound, Home, Repeat, Receipt, AlertTriangle, CalendarClock, ArrowRight } from 'lucide-react';
+import { KeyRound, Home, Repeat, Receipt, AlertTriangle, CalendarClock, ArrowRight, Cloud, Database } from 'lucide-react';
 import { getCareSummary, subscribeCare } from '../../services/care/careSummary';
+import { fetchCareSummaryLive } from '../../services/care/careLive';
 import { formatCents } from '../../services/careService';
+import type { CareSummary } from '../../lib/care/analytics/summary';
 
 /**
  * Brand & economy overview card for Care, surfaced on the RealtyFlow
- * dashboard. Reads the live Care numbers (MRR, properties, invoiced,
- * open charges, open issues, upcoming inspections).
+ * dashboard. Prefers live numbers from the `care` schema (when a real
+ * Supabase session exists); otherwise falls back to local demo data.
  */
 const CareEconomyStrip: React.FC = () => {
   const [, force] = useState(0);
+  const [live, setLive] = useState<CareSummary | null>(null);
   const navigate = useNavigate();
-  useEffect(() => subscribeCare(() => force((n) => n + 1)), []);
-  const s = getCareSummary();
+
+  useEffect(() => {
+    let active = true;
+    const load = () => { fetchCareSummaryLive().then((r) => { if (active) setLive(r); }); };
+    load();
+    const unsub = subscribeCare(() => { force((n) => n + 1); load(); });
+    return () => { active = false; unsub(); };
+  }, []);
+
+  const s = live ?? getCareSummary();
+  const isLive = !!live;
 
   const cells = [
     { label: 'Boliger', value: String(s.properties_under_management), icon: <Home size={16} className="text-cyan-400" /> },
@@ -32,7 +44,12 @@ const CareEconomyStrip: React.FC = () => {
             <KeyRound className="text-white" size={18} />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-100">Care — Brand &amp; økonomi</h3>
+            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+              Care — Brand &amp; økonomi
+              <span className={`inline-flex items-center gap-1 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${isLive ? 'bg-emerald-500/15 text-emerald-400' : 'bg-slate-800 text-slate-500'}`}>
+                {isLive ? <Cloud size={9} /> : <Database size={9} />}{isLive ? 'Live' : 'Lokal'}
+              </span>
+            </h3>
             <p className="text-[11px] text-slate-500">Zen Eco Homes · keyholding</p>
           </div>
         </div>
