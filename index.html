@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>RealtyFlow AI | Strategic Advisor</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#06b6d4" />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +59,10 @@
     "react-markdown": "https://esm.sh/react-markdown@9.0.1?external=react,react-dom",
     "remark-gfm": "https://esm.sh/remark-gfm@4.0.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "idb": "https://esm.sh/idb@8.0.0",
+    "browser-image-compression": "https://esm.sh/browser-image-compression@2.0.2",
+    "@react-pdf/renderer": "https://esm.sh/@react-pdf/renderer@3.4.4?external=react"
   }
 }
 </script>
@@ -83,6 +88,13 @@
       .custom-scrollbar::-webkit-scrollbar { width: 6px; }
       .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
       .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+      /* Care module helpers */
+      .btn-primary { display:inline-flex; align-items:center; gap:.5rem; background:#06b6d4; color:#001; font-weight:600; font-size:.875rem; padding:.5rem 1rem; border-radius:.75rem; border:none; cursor:pointer; }
+      .btn-primary:disabled { opacity:.4; cursor:not-allowed; }
+      .btn-ghost { display:inline-flex; align-items:center; gap:.5rem; background:transparent; color:#94a3b8; font-size:.875rem; padding:.5rem 1rem; border-radius:.75rem; border:1px solid #1e293b; cursor:pointer; }
+      .input { width:100%; margin-top:.25rem; background:#0f172a; border:1px solid #1e293b; color:#e2e8f0; border-radius:.5rem; padding:.5rem .75rem; font-size:.875rem; }
+      .input:focus { outline:none; border-color:#06b6d4; }
+      .tag { font-size:.7rem; background:#1e293b; color:#cbd5e1; padding:.1rem .5rem; border-radius:.35rem; }
     </style>
 </head>
 <body>

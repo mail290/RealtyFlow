@@ -1,0 +1,19 @@
+{
+  "name": "RealtyFlow Care — Tilsyn",
+  "short_name": "Care Tilsyn",
+  "description": "Offline-først keyholding-tilsyn: sjekkliste, bilder, målere.",
+  "start_url": "/#/care",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09090b",
+  "theme_color": "#06b6d4",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%2306b6d4'/%3E%3Cpath d='M96 44a24 24 0 100 48 24 24 0 000-48zm0 60c-8 0-14 6-14 14v22h28v-22c0-8-6-14-14-14z' fill='white'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

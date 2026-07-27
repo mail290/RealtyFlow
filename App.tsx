@@ -11,6 +11,8 @@ import ContentCMS from './pages/ContentCMS';
 import GrowthHub from './pages/GrowthHub';
 import Settings from './pages/Settings';
 import Inventory from './pages/Inventory';
+import Care from './pages/Care';
+import InspectionRunner from './pages/InspectionRunner';
 import Login from './pages/Login';
 import { authStore } from './services/authService';
 
@@ -39,6 +41,8 @@ const App: React.FC = () => {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/pipeline" element={<Pipeline />} />
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path="/care" element={<Care />} />
+                <Route path="/care/inspection/:id" element={<InspectionRunner />} />
                 <Route path="/market" element={<MarketPulse />} />
                 <Route path="/growth" element={<GrowthHub />} />
                 <Route path="/studio" element={<ImageStudio />} />
