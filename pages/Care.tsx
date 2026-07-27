@@ -7,9 +7,11 @@ import {
 import { careStore, formatCents } from '../services/careService';
 import { startInspection } from '../services/care/inspectionService';
 import ReportsPanel from './care/ReportsPanel';
+import { CalendarPanel, KeysPanel, InvoicingPanel } from './care/OpsPanels';
+import { CalendarDays, KeyRound as KeyIcon, Receipt } from 'lucide-react';
 import type { KhProperty, KhVendor, PropertyType } from '../lib/care/types/careDb';
 
-type Tab = 'overview' | 'properties' | 'contracts' | 'vendors' | 'checklist' | 'reports';
+type Tab = 'overview' | 'properties' | 'contracts' | 'vendors' | 'checklist' | 'reports' | 'calendar' | 'keys' | 'invoicing';
 type Locale = 'no' | 'en' | 'es';
 
 const PROPERTY_TYPES: PropertyType[] = ['apartment', 'townhouse', 'villa', 'finca'];
@@ -18,7 +20,7 @@ const TXT: Record<Locale, Record<string, string>> = {
   no: {
     title: 'Care', subtitle: 'Keyholding og boligforvaltning',
     overview: 'Oversikt', properties: 'Boliger', contracts: 'Kontrakter',
-    vendors: 'Leverandører', checklist: 'Sjekkliste', reports: 'Rapporter',
+    vendors: 'Leverandører', checklist: 'Sjekkliste', reports: 'Rapporter', calendar: 'Kalender', keys: 'Nøkler', invoicing: 'Fakturering',
     addProperty: 'Ny bolig', addContract: 'Ny kontrakt', addVendor: 'Ny leverandør',
     ref: 'Referanse', type: 'Type', address: 'Adresse', municipality: 'Kommune',
     pool: 'Basseng', garden: 'Hage', save: 'Lagre', cancel: 'Avbryt',
@@ -30,7 +32,7 @@ const TXT: Record<Locale, Record<string, string>> = {
   en: {
     title: 'Care', subtitle: 'Keyholding and property management',
     overview: 'Overview', properties: 'Properties', contracts: 'Contracts',
-    vendors: 'Vendors', checklist: 'Checklist', reports: 'Reports',
+    vendors: 'Vendors', checklist: 'Checklist', reports: 'Reports', calendar: 'Calendar', keys: 'Keys', invoicing: 'Invoicing',
     addProperty: 'New property', addContract: 'New contract', addVendor: 'New vendor',
     ref: 'Reference', type: 'Type', address: 'Address', municipality: 'Municipality',
     pool: 'Pool', garden: 'Garden', save: 'Save', cancel: 'Cancel',
@@ -42,7 +44,7 @@ const TXT: Record<Locale, Record<string, string>> = {
   es: {
     title: 'Care', subtitle: 'Keyholding y gestión de propiedades',
     overview: 'Resumen', properties: 'Propiedades', contracts: 'Contratos',
-    vendors: 'Proveedores', checklist: 'Lista de control', reports: 'Informes',
+    vendors: 'Proveedores', checklist: 'Lista de control', reports: 'Informes', calendar: 'Calendario', keys: 'Llaves', invoicing: 'Facturación',
     addProperty: 'Nueva propiedad', addContract: 'Nuevo contrato', addVendor: 'Nuevo proveedor',
     ref: 'Referencia', type: 'Tipo', address: 'Dirección', municipality: 'Municipio',
     pool: 'Piscina', garden: 'Jardín', save: 'Guardar', cancel: 'Cancelar',
@@ -78,6 +80,9 @@ const Care: React.FC = () => {
     { id: 'vendors', label: t.vendors, icon: <Wrench size={16} /> },
     { id: 'checklist', label: t.checklist, icon: <ListChecks size={16} /> },
     { id: 'reports', label: t.reports, icon: <FileText size={16} /> },
+    { id: 'calendar', label: t.calendar, icon: <CalendarDays size={16} /> },
+    { id: 'keys', label: t.keys, icon: <KeyIcon size={16} /> },
+    { id: 'invoicing', label: t.invoicing, icon: <Receipt size={16} /> },
   ];
 
   return (
@@ -147,6 +152,9 @@ const Care: React.FC = () => {
       {tab === 'vendors' && <VendorsTab t={t} vendors={vendors} />}
       {tab === 'checklist' && <ChecklistTab t={t} locale={locale} />}
       {tab === 'reports' && <ReportsPanel />}
+      {tab === 'calendar' && <CalendarPanel />}
+      {tab === 'keys' && <KeysPanel />}
+      {tab === 'invoicing' && <InvoicingPanel />}
     </div>
   );
 };

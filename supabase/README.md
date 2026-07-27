@@ -182,6 +182,26 @@ delivery, the tokened login-free share page with view tracking
 `kh_report_deliveries`. The schema for all of this already exists (Fase 1);
 the UI shows a placeholder `share_url` and marks it clearly.
 
+## Fase 4–6 — calendar, keys, invoicing
+
+- **Pure, tested logic** (`lib/care/calendar/`, `lib/care/invoicing/`, 18
+  tests): `scheduling.ts` (evenly-spread monthly inspections that avoid
+  stays, prep-before-arrival task 24h ahead, post-departure inspection
+  within 48h), `ical.ts` (RFC-5545 feed per property), `draft.ts` (monthly
+  invoice draft: plan fixed + open charges, IVA/IRPF as separate lines,
+  gap-free numbering).
+- **Ops service + UI** (`services/care/opsService.ts`,
+  `pages/care/OpsPanels.tsx`): Care tabs **Kalender** (events, auto-schedule
+  from the plan, iCal download), **Nøkler** (key register + check-out/in
+  handover log), **Fakturering** (add charges, generate an approved-by-human
+  monthly draft). localStorage demo + best-effort mirror to the `care`
+  schema.
+
+**Backend follow-ups (like Auth/email):** the owner portal (magic-link
+login, report archive, consumption graph — Fase 5) and real invoice
+send/Verifactu (Fase 6) need server endpoints; the schema and drafts exist,
+the fiscal/delivery integration does not.
+
 ## Known gap (carried into Fase 2)
 
 The RealtyFlow app currently authenticates with a **hardcoded credential
