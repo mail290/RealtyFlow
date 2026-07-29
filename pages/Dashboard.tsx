@@ -8,7 +8,7 @@ import { gemini } from '../services/geminiService';
 import { isCloudConnected } from '../services/supabase';
 import { 
   TrendingUp, Users, Target, Activity, ArrowRight, Star, Sun, ChevronRight, 
-  Plus, X, Camera, UserPlus, Loader2, Sparkles, Euro, MessageSquare, Brain, CloudCheck, CloudOff
+  Plus, X, Camera, UserPlus, Loader2, Sparkles, Euro, MessageSquare, Brain, Cloud, CloudOff
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CareEconomyStrip from '../components/care/CareEconomyStrip';
@@ -154,7 +154,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center gap-3 mb-1">
             <h1 className="text-3xl lg:text-4xl font-bold neon-text text-cyan-400">Costa Blanca HQ</h1>
             <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border ${isCloudConnected ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-amber-500/10 border-amber-500/20 text-amber-400'}`}>
-               {isCloudConnected ? <CloudCheck size={12} /> : <CloudOff size={12} />}
+               {isCloudConnected ? <Cloud size={12} /> : <CloudOff size={12} />}
                {isCloudConnected ? 'Cloud Sync Active' : 'Local Storage Mode'}
             </div>
           </div>

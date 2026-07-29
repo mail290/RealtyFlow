@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Map, Image as ImageIcon, FileText, Settings, Mic, Rocket, Home, Zap, MapPin, Database, CloudCheck, KeyRound } from 'lucide-react';
+import { LayoutDashboard, Users, Map, Image as ImageIcon, FileText, Settings, Mic, Rocket, Home, Zap, MapPin, Database, Cloud, KeyRound } from 'lucide-react';
 import { isCloudConnected } from '../services/supabase';
 import { LogOut } from 'lucide-react';
 import { settingsStore } from '../services/settingsService';
@@ -76,7 +76,7 @@ const Sidebar: React.FC = () => {
       <div className="p-4 mt-auto space-y-3">
         <div className={`px-4 py-2 rounded-xl border flex items-center justify-between transition-all ${isCloudConnected ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-slate-900 border-slate-800'}`}>
            <div className="flex items-center gap-2">
-              {isCloudConnected ? <CloudCheck size={14} className="text-emerald-500" /> : <Database size={14} className="text-slate-600" />}
+              {isCloudConnected ? <Cloud size={14} className="text-emerald-500" /> : <Database size={14} className="text-slate-600" />}
               <span className={`text-[9px] font-bold uppercase tracking-widest ${isCloudConnected ? 'text-emerald-500' : 'text-slate-600'}`}>
                  {isCloudConnected ? 'Cloud Sync' : 'Local Mode'}
               </span>
